@@ -1,5 +1,8 @@
 Fuzzer
 ======
 
-The fabulous fuzzer project for software security: 
-http://www.se.rit.edu/~swen-331/projects/fuzzer/
+The fabulous fuzzer project for software security 
+
+Language : Python - 2.7
+Packages Utilized :
+  - Requests http://docs.python-requests.org/en/latest/
