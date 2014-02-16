@@ -22,7 +22,7 @@ def link_discovery(page):
 	discovers all accessible links in the same domain
 	given a page. Returns a list of urls found
 	"""
-	urls = []
+	urls = ['.'] # Root automatically added
 	soup = BeautifulSoup(page.content)
 
 	for link in soup.findAll('a'):
@@ -30,6 +30,7 @@ def link_discovery(page):
 
 		# Only include those in our domain and not seen yet
 		if "http://" not in href and href not in urls: 
+			logger.info("New page found: " + href)
 			urls.append(link.get('href'))
 
 	return urls
