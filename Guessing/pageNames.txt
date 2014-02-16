@@ -1,0 +1,7 @@
+default
+config
+register
+index
+password
+admin
+about
