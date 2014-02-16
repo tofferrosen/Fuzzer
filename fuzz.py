@@ -5,6 +5,7 @@ usage: python fuzz [discover | test] url OPTIONS
 """
 import sys 									# For system arguments
 import requests								# requests HTTP library 
+from logger import *
 from custom_auth import *					# Read in all hardcoded authentication
 from options import *						# Options parser
 from discover import * 						# Module containing page discovery functions
@@ -45,6 +46,7 @@ else:
 				if page.status_code != 200:
 					parser.error("Cannot reach the URL specified")
 				else:
+					logger.info("Authenticated to DVWA")
 					page_discovery(page)
 					
 
