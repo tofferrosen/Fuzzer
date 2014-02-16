@@ -14,3 +14,5 @@ http://yogi.se.rit.edu/~swen-331/projects/fuzzer/
 * beautiful soup (`pip install beautifulsoup`)
 
 
+### Example usage for discovery:
+python fuzz.py discover http://127.0.0.1 --custom-auth=dvwa --common-words="Guessing/pageNames.txt"

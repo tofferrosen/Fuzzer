@@ -4,7 +4,7 @@ description: parsing options given in the command line interface
 """
 from optparse import OptionParser
 
-usage = "Usage: %prog [discover | test] url"
+usage = "Usage: %prog [discover | test] url [OPTIONS]"
 parser = OptionParser(usage=usage)
 
 parser.add_option("--custom-auth", dest="app_to_auth", 

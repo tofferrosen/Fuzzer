@@ -4,16 +4,17 @@ description: Contains functions for performing discovery of a web page
 """
 from logger import * 
 import requests
+import sys
 from BeautifulSoup import BeautifulSoup
 
-def page_discovery(page, session):
+def page_discovery(page, session, common_words_file):
 	"""
 	craws and guesses pages, including link discovery and page 
 	guessing
 	"""
 	logger.info("Crawling for pages")
 	discovered_urls = link_discovery(page)
-	page_guessing(page, session, discovered_urls)
+	page_guessing(page, session, discovered_urls, common_words_file)
 
 	#print discovered_urls
 	
@@ -36,13 +37,19 @@ def link_discovery(page):
 
 	return urls
 
-def page_guessing(page, session, discovered_urls):
+def page_guessing(page, session, discovered_urls, common_words_file):
 	"""
 	discovers potentially unlinked pages using common extentions
 	"""
 
 	common_ext = open("Guessing/urlExtentions.txt", "r").read().splitlines()
-	common_pgs = open("Guessing/pageNames.txt", "r").read().splitlines()
+
+	try:
+		common_pgs = open(common_words_file, "r").read().splitlines()
+	except:
+		logger.error("list of common words file not found: " + common_words_file)
+		return
+
 
 	# We're up all night to get lucky
 	for pg in common_pgs:

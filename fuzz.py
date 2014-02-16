@@ -20,34 +20,47 @@ else:
 	action = sys.argv[1]
 	url = sys.argv[2]
 
-	# authentice if applicable to site
-	if options.app_to_auth is not None:
+	if action == "discover":
+		# Ensure that required common-file option is set
+		if options.common_words is None:
+			parser.error("newlone-delimited file of common words is required for discovery")
+		else:
+			
+			# authentice if applicable to site
+			if options.app_to_auth is not None:
 
-		try: 
-			username = custom_auth[options.app_to_auth]["username"]
-			password = custom_auth[options.app_to_auth]["password"]
-		except:
-			parser.error("application specified in --custom-auth does not exist!")
+				try: 
+					username = custom_auth[options.app_to_auth]["username"]
+					password = custom_auth[options.app_to_auth]["password"]
+				except:
+					parser.error("application specified in --custom-auth does not exist!")
 
-		if options.app_to_auth == "dvwa":
+				if options.app_to_auth == "dvwa":
 
-			# Details to be posted to the login form
-			payload = {
-				"username": username,
-				"password": password,
-				"Login": "Login"
-			}
+					# Details to be posted to the login form
+					payload = {
+						"username": username,
+						"password": password,
+						"Login": "Login"
+					}
 
-			s = requests.Session()
-			s.post(custom_auth[options.app_to_auth]["login_url"], data=payload)
-			page = s.get(url + "/" + options.app_to_auth)
+					s = requests.Session()
+					s.post(custom_auth[options.app_to_auth]["login_url"], data=payload)
+					page = s.get(url + "/" + options.app_to_auth)
 
-			# make sure that url can be reached
-			if page.status_code != 200:
-				parser.error("Cannot reach the URL specified")
-			else:
-				logger.info("Authenticated to DVWA")
-				page_discovery(page, s)
+					# make sure that url can be reached
+					if page.status_code != 200:
+						parser.error("Cannot reach the URL specified")
+					else:
+						logger.info("Authenticated to DVWA")
+						page_discovery(page, s, options.common_words)
+
+			# End custom-auth option
+	# End discover
+	elif action == "test":
+		logger.error("not implemented yet")
+	else:
+		parser.error("invalid action")
 					
 
 
