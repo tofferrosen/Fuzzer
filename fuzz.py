@@ -44,18 +44,18 @@ else:
 						"Login": "Login"
 					}
 
-					s = requests.Session()
-					s.post(custom_auth[options.app_to_auth]["login_url"], data=payload)
-					page = s.get(url + "/" + options.app_to_auth)
+					session = requests.Session()
+					session.post(custom_auth[options.app_to_auth]["login_url"], data=payload)
+					page = session.get(url + "/" + options.app_to_auth)
 
 					# make sure that url can be reached
 					if page.status_code != 200:
 						parser.error("Cannot reach the URL specified")
 					else:
 						logger.info("Authenticated to DVWA")
-						discovered_urls = page_discovery(page, s, options.common_words)
+						discovered_urls = page_discovery(page, session, options.common_words)
 						for url in discovered_urls:
-							input_discovery(url)
+							input_discovery(url,session)
 						
 
 			# End custom-auth option
