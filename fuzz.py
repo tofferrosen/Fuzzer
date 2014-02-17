@@ -53,7 +53,10 @@ else:
 						parser.error("Cannot reach the URL specified")
 					else:
 						logger.info("Authenticated to DVWA")
-						page_discovery(page, s, options.common_words)
+						discovered_urls = page_discovery(page, s, options.common_words)
+						for url in discovered_urls:
+							input_discovery(url)
+						
 
 			# End custom-auth option
 	# End discover

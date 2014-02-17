@@ -16,7 +16,7 @@ def page_discovery(page, session, common_words_file):
 	discovered_urls = link_discovery(page)
 	page_guessing(page, session, discovered_urls, common_words_file)
 
-	#print discovered_urls
+	return discovered_urls
 	
 
 def link_discovery(page):
@@ -59,7 +59,23 @@ def page_guessing(page, session, discovered_urls, common_words_file):
 				logger.info("New page found: " + possible_pg.url)
 				discovered_urls.append(possible_pg.url)
 
-
+def input_discovery(url):
+	"""
+	crawls a page to discover all possible ways to input data into the system
+	"""
+	
+	logger.info("Discovering inputs for %s" % (url))
+	
+	form_parameter_discovery(url)
+	cookie_discovery(url)
+	
+	return
+	
+def form_parameter_discovery(url):
+	return
+	
+def cookie_discovery(url):
+	return
 
 
 	
