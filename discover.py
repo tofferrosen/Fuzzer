@@ -5,7 +5,7 @@ description: Contains functions for performing discovery of a web page
 from logger import * 
 import requests
 import sys
-from BeautifulSoup import BeautifulSoup
+from BeautifulSoup import BeautifulSoup, SoupStrainer
 
 def page_discovery(page, session, common_words_file):
 	"""
@@ -59,22 +59,33 @@ def page_guessing(page, session, discovered_urls, common_words_file):
 				logger.info("New page found: " + possible_pg.url)
 				discovered_urls.append(possible_pg.url)
 
-def input_discovery(url):
+def input_discovery(url, session):
 	"""
 	crawls a page to discover all possible ways to input data into the system
 	"""
 	
 	logger.info("Discovering inputs for %s" % (url))
 	
-	form_parameter_discovery(url)
-	cookie_discovery(url)
+	form_parameter_discovery(url, session)
+	cookie_discovery(url, session)
 	
 	return
 	
-def form_parameter_discovery(url):
-	return
+def form_parameter_discovery(url, session):
+	page = session.get(url)
+	soup = BeautifulSoup(page.content)
 	
-def cookie_discovery(url):
+	for input_field in soup.findAll('input'):
+		if input_field.has_key('name'):
+			logger.info("--input field '%s' found" % (input_field['name']))
+	
+	'''for field in BeautifulSoup(content, parseOnlyThese=SoupStrainer('input')):
+		if field.has_key('name'):
+			logger.info("  input field '%s' found" % (field['name']))
+
+	return'''
+	
+def cookie_discovery(url, session):
 	return
 
 
