@@ -2,10 +2,12 @@
 file: discover.py
 description: Contains functions for performing discovery of a web page
 """
-from logger import * 
-import requests
+from logger import * # logging output
+import requests	# for gettign web pages
 import sys
-from BeautifulSoup import BeautifulSoup, SoupStrainer
+from BeautifulSoup import BeautifulSoup, SoupStrainer	# for parsing web pages
+from urlparse import urljoin # for resolving a relative url path to absolute path
+
 
 def page_discovery(page, session, common_words_file):
 	"""
@@ -13,29 +15,51 @@ def page_discovery(page, session, common_words_file):
 	guessing
 	"""
 	logger.info("Crawling for pages")
-	discovered_urls = link_discovery(page)
+	discovered_urls = link_discovery(page.url, session)
 	page_guessing(page, session, discovered_urls, common_words_file)
 
 	return discovered_urls
 	
+def recursive_link_search(url, urls, session, max_depth, depth):
+	"""
+	helper function for link_discovery
+	max_depth + depth is just only so that we can control how
+	far we want to recurse, as this is quite a performance dump
+	"""
+	
+	if depth == max_depth:
+		return
 
-def link_discovery(page):
+	# Add page if not seen b4
+	if url not in urls:
+		logger.info("New page found: " + url)
+		urls.append(url)
+
+	page = session.get(url)
+	soup = BeautifulSoup(page.content)
+	links = soup.findAll('a', href=True)
+
+	for link in links:
+
+		# Only include links in our domain
+		if "http://" not in link.get('href'):
+			href_absolute = urljoin(page.url, link.get('href'))
+
+			# Only include links not seen yet
+			if href_absolute not in urls: 
+				recursive_link_search(href_absolute, urls, session, max_depth, depth+1)
+
+	return urls
+
+def link_discovery(url,session):
 	"""
 	discovers all accessible links in the same domain
 	given a page. Returns a list of urls found
 	"""
-	urls = ['http://127.0.0.1/dvwa/.'] # Root automatically added
-	soup = BeautifulSoup(page.content)
-
-	for link in soup.findAll('a'):
-		href = page.url + link.get('href')
-
-		# Only include those in our domain and not seen yet
-		if "http://" not in link.get('href') and href not in urls: 
-			logger.info("New page found: " + href)
-			urls.append(href)
-
+	max_depth = 50 # huge sites -> horrific performance w/ recursion
+	urls = recursive_link_search(url, [], session, max_depth, 0)
 	return urls
+
 
 def page_guessing(page, session, discovered_urls, common_words_file):
 	"""
