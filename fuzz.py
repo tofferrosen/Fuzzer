@@ -56,9 +56,20 @@ else:
 						discovered_urls = page_discovery(page, session, options.common_words)
 						for url in discovered_urls:
 							input_discovery(url,session)
-						
 
-			# End custom-auth option
+			# No custom authentication given
+			else:
+				session = requests.Session()
+				page = session.get(url)
+
+				# make sure that url can be reached
+				if page.status_code != 200:
+					parser.error("Cannot reach the URL specified")
+				else:
+					discovered_urls = page_discovery(page, session, options.common_words)
+					for url in discovered_urls:
+						input_discovery(url,session)
+
 	# End discover
 	elif action == "test":
 		logger.error("not implemented yet")

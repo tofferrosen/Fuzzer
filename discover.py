@@ -7,6 +7,7 @@ import requests	# for gettign web pages
 import sys
 from BeautifulSoup import BeautifulSoup, SoupStrainer	# for parsing web pages
 from urlparse import urljoin # for resolving a relative url path to absolute path
+from urlparse import urlparse # for parsing the domain of a url
 
 
 def page_discovery(page, session, common_words_file):
@@ -20,7 +21,7 @@ def page_discovery(page, session, common_words_file):
 
 	return discovered_urls
 	
-def recursive_link_search(url, urls, session, max_depth, depth):
+def recursive_link_search(url, domain, urls, session, max_depth, depth):
 	"""
 	helper function for link_discovery
 	max_depth + depth is just only so that we can control how
@@ -40,14 +41,14 @@ def recursive_link_search(url, urls, session, max_depth, depth):
 	links = soup.findAll('a', href=True)
 
 	for link in links:
+		href_absolute = urljoin(page.url, link.get('href'))
 
 		# Only include links in our domain
-		if "http://" not in link.get('href'):
-			href_absolute = urljoin(page.url, link.get('href'))
-
+		if domain in href_absolute:
+	
 			# Only include links not seen yet
 			if href_absolute not in urls: 
-				recursive_link_search(href_absolute, urls, session, max_depth, depth+1)
+				recursive_link_search(href_absolute, domain, urls, session, max_depth, depth+1)
 
 	return urls
 
@@ -57,7 +58,10 @@ def link_discovery(url,session):
 	given a page. Returns a list of urls found
 	"""
 	max_depth = 50 # huge sites -> horrific performance w/ recursion
-	urls = recursive_link_search(url, [], session, max_depth, 0)
+
+	parsed_uri = urlparse(url)
+	domain = '{uri.scheme}://{uri.netloc}'.format(uri=parsed_uri)
+	urls = recursive_link_search(url, domain, [], session, max_depth, 0)
 	return urls
 
 
