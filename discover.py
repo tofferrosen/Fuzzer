@@ -43,12 +43,9 @@ def recursive_link_search(url, domain, urls, session, max_depth, depth):
 	for link in links:
 		href_absolute = urljoin(page.url, link.get('href'))
 
-		# Only include links in our domain
-		if domain in href_absolute:
-	
-			# Only include links not seen yet
-			if href_absolute not in urls: 
-				recursive_link_search(href_absolute, domain, urls, session, max_depth, depth+1)
+		# Only include links in our domain and not seen b4
+		if href_absolute.startswith(domain) and href_absolute not in urls:
+			recursive_link_search(href_absolute, domain, urls, session, max_depth, depth+1)
 
 	return urls
 
