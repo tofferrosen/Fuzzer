@@ -23,10 +23,10 @@ else:
 	if action == "discover":
 		# Ensure that required common-file option is set
 		if options.common_words is None:
-			parser.error("newlone-delimited file of common words is required for discovery")
+			parser.error("newline-delimited file of common words is required for discovery")
 		else:
 			
-			# authentice if applicable to site
+			# authentic if applicable to site
 			if options.app_to_auth is not None:
 
 				try: 

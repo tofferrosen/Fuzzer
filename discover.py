@@ -86,7 +86,15 @@ def form_parameter_discovery(url, session):
 	return'''
 	
 def cookie_discovery(url, session):
-	return
+	page = session.get(url);
+	cookies = session.cookies;
+
+	logger.info("Discovering cookies")
+
+	for cookie in cookies:
+		logger.info("--cookie found: %(name)s=%(value)s" % {"name": cookie.name, "value": cookie.value})
+
+	return cookies
 
 
 	
