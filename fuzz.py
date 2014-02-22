@@ -2,6 +2,12 @@
 file: fuzz.py
 description: base script to call.
 usage: python fuzz [discover | test] url OPTIONS
+
+Project Team:
+
+CHRISTOFFER ROSEN			 <cbr4830@rit.edu>
+ISIOMA NNODUM 				 <iun4534@rit.edu>
+SAMANTHA SHANDROW 			 <ses6421@rit.edu>
 """
 import sys 									# For system arguments
 import requests								# requests HTTP library 

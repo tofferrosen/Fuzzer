@@ -4,6 +4,12 @@ Fuzzer
 The fabulous fuzzer project for software security:
 http://yogi.se.rit.edu/~swen-331/projects/fuzzer/
 
+Project Team:
+
+CHRISTOFFER ROSEN			 <cbr4830@rit.edu>
+ISIOMA NNODUM 				 <iun4534@rit.edu>
+SAMANTHA SHANDROW 			 <ses6421@rit.edu>
+
 ## Installation
 1. Clone this repository to an empty directory
 2. Install all dependencies - we recommend using `pip`
