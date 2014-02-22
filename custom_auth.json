@@ -3,5 +3,10 @@
 		"username": "admin",
 		"password": "password",
 		"login_url": "http://127.0.0.1/dvwa/login.php"
+	},
+	"bodgeit": {
+		"username": "none",
+		"password": "none",
+		"login_url": "http://127.0.0.1:8080/bodgeit"
 	}
 }

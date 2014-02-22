@@ -54,7 +54,7 @@ def link_discovery(url,session):
 	discovers all accessible links in the same domain
 	given a page. Returns a list of urls found
 	"""
-	max_depth = 50 # huge sites -> horrific performance w/ recursion
+	max_depth = 100 # huge sites -> horrific performance w/ recursion
 
 	parsed_uri = urlparse(url)
 	domain = '{uri.scheme}://{uri.netloc}'.format(uri=parsed_uri)
