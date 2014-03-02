@@ -11,11 +11,13 @@ SAMANTHA SHANDROW 			 <ses6421@rit.edu>
 """
 import sys 									# For system arguments
 import requests								# requests HTTP library 
+import pprint
 from logger import *
 from custom_auth import *					# Read in all hardcoded authentication
 from options import *						# Options parser
 from discover import * 						# Module containing page discovery functions
 
+pr = pprint.PrettyPrinter(indent=4)
 
 (options, args) = parser.parse_args()
 
@@ -76,8 +78,13 @@ else:
 
 			# time to discover
 			discovered_urls = page_discovery(page, session, options.common_words)
+			discovered_pages = list()
 			for url in discovered_urls:
-				input_discovery(url,session)
+				inputs = input_discovery(url,session)
+				discovered_page = { 'url': url, 'inputs': inputs }
+				discovered_pages.append(discovered_page)
+
+			pr.pprint(discovered_pages)
 
 	# End discover
 	elif action == "test":
