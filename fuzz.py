@@ -9,13 +9,14 @@ CHRISTOFFER ROSEN			 <cbr4830@rit.edu>
 ISIOMA NNODUM 				 <iun4534@rit.edu>
 SAMANTHA SHANDROW 			 <ses6421@rit.edu>
 """
-import sys 									# For system arguments
-import requests								# requests HTTP library 
+import sys 											# For system arguments
+import requests									# requests HTTP library
 import pprint
 from logger import *
-from custom_auth import *					# Read in all hardcoded authentication
+from custom_auth import *				# Read in all hardcoded authentication
 from options import *						# Options parser
-from discover import * 						# Module containing page discovery functions
+from discover import * 					# Module containing page discovery functions
+from test import *							 # Module containing page test functions
 
 pr = pprint.PrettyPrinter(indent=4)
 
@@ -28,19 +29,19 @@ else:
 	action = sys.argv[1]
 	url = sys.argv[2]
 
-	if action == "discover":
+	if action == "discover" or action == "test":
 		page = None
-		session = None 
+		session = None
 
 		# Ensure that required common-file option is set
 		if options.common_words is None:
 			parser.error("newline-delimited file of common words is required for discovery")
 		else:
-			
+
 			# authentic if applicable to site
 			if options.app_to_auth is not None:
 
-				try: 
+				try:
 					username = custom_auth[options.app_to_auth.lower()]["username"]
 					password = custom_auth[options.app_to_auth.lower()]["password"]
 				except:
@@ -69,7 +70,7 @@ else:
 			else:
 				session = requests.Session()
 				page = session.get(url)
-			
+
 			# make sure that url can be reached
 			if page.status_code != 200:
 				parser.error("Cannot reach the URL specified")
@@ -86,13 +87,7 @@ else:
 
 			pr.pprint(discovered_pages)
 
-	# End discover
-	elif action == "test":
-		logger.error("not implemented yet")
+			if action == "test":
+				test_pages(discovered_pages)
 	else:
 		parser.error("invalid action")
-					
-
-
-
-
