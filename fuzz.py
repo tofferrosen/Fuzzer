@@ -88,7 +88,7 @@ else:
 			pr.pprint(discovered_pages)
 
 			if action == "test":
-				test_pages(discovered_pages)
+				test_pages(discovered_pages, session)
 	else:
-		test_pages([])
+		test_pages([], session)
 		#parser.error("invalid action")

@@ -9,13 +9,13 @@ from delayed_response_exploit import *		 # the concrete delayed response exploit
 from http_response_exploit import *			 # the concrete http response code exploit
 from sensitive_data_exploit import *		 # the concrete sensitive data exploit
 
-def test_pages(pages):
+def test_pages(pages, session):
 
   # set up all exploit strategies 
-  sanitization = ExploitStrategy(pages, SanitizationExploit())
-  delayed_response = ExploitStrategy(pages, DelayedResponseExploit())
-  http_reponse = ExploitStrategy(pages, HttpResponseExploit())
-  sensitive_data = ExploitStrategy(pages, SensitiveDataExploit())
+  sanitization = ExploitStrategy(pages, session, SanitizationExploit())
+  delayed_response = ExploitStrategy(pages, session, DelayedResponseExploit())
+  http_reponse = ExploitStrategy(pages, session, HttpResponseExploit())
+  sensitive_data = ExploitStrategy(pages, session, SensitiveDataExploit())
 
   # excute all exploit strategies
   sanitization.execute()
