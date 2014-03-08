@@ -84,11 +84,7 @@ def page_guessing(page, session, discovered_urls, common_words_file):
 			if possible_pg.status_code < 300 and possible_pg.url not in discovered_urls:
 				logger.info("New page found: " + possible_pg.url)
 
-				discovered_page = {
-					'url': possible_pg.url
-				}
-
-				discovered_urls.append(discovered_page)
+				discovered_urls.append(possible_pg.url)
 
 def input_discovery(url, session):
 	"""
@@ -96,8 +92,6 @@ def input_discovery(url, session):
 	"""
 	
 	logger.info("Discovering inputs for %s" % (url))
-
-	
 	forms = form_discovery(url, session)
 	cookies = cookie_discovery(url, session)
 	

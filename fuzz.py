@@ -90,4 +90,5 @@ else:
 			if action == "test":
 				test_pages(discovered_pages)
 	else:
-		parser.error("invalid action")
+		test_pages([])
+		#parser.error("invalid action")
