@@ -85,7 +85,7 @@ def page_guessing(page, session, discovered_urls, common_words_file):
 				logger.info("New page found: " + possible_pg.url)
 
 				discovered_page = {
-					url: possible_pg.url
+					'url': possible_pg.url
 				}
 
 				discovered_urls.append(discovered_page)
