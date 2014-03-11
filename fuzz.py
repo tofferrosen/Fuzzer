@@ -10,13 +10,13 @@ ISIOMA NNODUM 				 <iun4534@rit.edu>
 SAMANTHA SHANDROW 			 <ses6421@rit.edu>
 """
 import sys 											# For system arguments
-import requests									# requests HTTP library
+import requests										# requests HTTP library
 import pprint
 from logger import *
-from custom_auth import *				# Read in all hardcoded authentication
-from options import *						# Options parser
-from discover import * 					# Module containing page discovery functions
-from test import *							 # Module containing page test functions
+from custom_auth import *							# Read in all hardcoded authentication
+from options import *								# Options parser
+from discover import * 								# Module containing page discovery functions
+from test import *							 		# Module containing page test functions
 
 pr = pprint.PrettyPrinter(indent=4)
 
@@ -86,6 +86,10 @@ else:
 				discovered_pages.append(discovered_page)
 
 			pr.pprint(discovered_pages)
+
+			# time to fuzz test
+			delayed_response = ExploitStrategy(discovered_pages, session, DelayedResponseExploit())
+			delayed_response.execute()
 
 			if action == "test":
 				test_pages(discovered_pages, session)
