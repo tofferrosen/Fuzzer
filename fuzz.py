@@ -22,6 +22,8 @@ pr = pprint.PrettyPrinter(indent=4)
 
 (options, args) = parser.parse_args()
 
+logger.info(options)
+
 if len(sys.argv) < 4:
 	parser.error("incorrect number of arguments")
 
