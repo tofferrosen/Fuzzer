@@ -28,3 +28,6 @@ SAMANTHA SHANDROW 			 <ses6421@rit.edu>
 
 #### No Custom Authentication
 `python fuzz.py discover http://127.0.0.1 --common-words="Guessing/pageNames.txt"`
+
+## Example Usage for Test
+`python fuzz.py test http://127.0.0.1 --common-words="Guessing/pageNames.txt" --vectors="FuzzVectors/sqlInjection.txt`
