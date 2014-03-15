@@ -85,10 +85,10 @@ else:
 				discovered_page = { 'url': url, 'inputs': inputs }
 				discovered_pages.append(discovered_page)
 
-			pr.pprint(discovered_pages)
+			#pr.pprint(discovered_pages)
 
 			if action == "test":
-				test_pages(discovered_pages, session)
+				test_pages(discovered_pages, session, options)
 	else:
-		test_pages([], session)
-		#parser.error("invalid action")
+		#test_pages([], session)
+		parser.error("invalid action")
