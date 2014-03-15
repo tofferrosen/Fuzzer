@@ -21,12 +21,12 @@ def test_pages(pages, session, options):
 
   # set up all exploit strategies 
   sanitization = ExploitStrategy(pages, session, SanitizationExploit(), options)
- # delayed_response = ExploitStrategy(pages, session, DelayedResponseExploit(), options)
+  delayed_response = ExploitStrategy(pages, session, DelayedResponseExploit(), options)
  # http_reponse = ExploitStrategy(pages, session, HttpResponseExploit(), options)
  # sensitive_data = ExploitStrategy(pages, session, SensitiveDataExploit(), options)
 
   # excute all exploit strategies
- # sanitization.execute()
- # delayed_response.execute()
+  #sanitization.execute()
+  #delayed_response.execute()
  # http_response.execute()
  # sensitive_data.execute()
