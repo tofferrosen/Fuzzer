@@ -87,10 +87,6 @@ else:
 
 			#pr.pprint(discovered_pages)
 
-			# time to fuzz test
-			delayed_response = ExploitStrategy(discovered_pages, session, DelayedResponseExploit())
-			delayed_response.execute()
-
 			if action == "test":
 				test_pages(discovered_pages, session, options)
 	else:
