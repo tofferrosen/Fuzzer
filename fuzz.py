@@ -92,11 +92,11 @@ else:
 			cookies = session.cookies
 
 			# time to discover
-			discovered_urls = page_discovery(page, session, options.common_words)
+			discovered_urls, session = page_discovery(page, session, options.common_words)
 			discovered_pages = list()
 			
 			for url in discovered_urls:
-				inputs = input_discovery(url,session)
+				inputs, session = input_discovery(url,session)
 				discovered_page = { 'url': url, 'inputs': inputs }
 				discovered_pages.append(discovered_page)
 

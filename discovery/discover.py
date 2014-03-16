@@ -20,7 +20,7 @@ def page_discovery(page, session, common_words_file):
 	discovered_urls = link_discovery(page, session)
 	page_guessing(page, session, discovered_urls, common_words_file)
 
-	return discovered_urls
+	return discovered_urls, session
 
 def dvwa_relogin(session, url):
 	"""
@@ -71,8 +71,9 @@ def recursive_link_search(url, domain, urls, session, max_depth, depth):
 	page = session.get(url)
 
 	# check if we are dvwa, if we have been redirected to login page
-	if "http://127.0.0.1/dvwa/login.php" in page.url and "logout.php" not in url:
-		print("redirecting")
+	if "http://127.0.0.1/dvwa/login.php" in page.url and "logout.php" not in url \
+		and "dvwa/login" not in url:
+		logger.info("relogging back to dvwa")
 		page, session = dvwa_relogin(session, url)
 
 	soup = BeautifulSoup(page.content)
@@ -121,9 +122,10 @@ def page_guessing(page, session, discovered_urls, common_words_file):
 			possible_pg = session.get(page.url + pg + "." + ext)
 
 			# check if we are dvwa, if we have been redirected to login page
-			if "http://127.0.0.1/dvwa/login.php" in page.url and "logout.php" not in url:
-				possible_pg, session = dvwa_relogin(session, url)
+			if "http://127.0.0.1/dvwa/login.php" in possible_pg.url and "logout.php" not in page.url:
+				possible_pg, session = dvwa_relogin(session, possible_pg.url)
 
+			# is this possible page not been seen before?
 			if possible_pg.status_code < 300 and possible_pg.url not in discovered_urls:
 				logger.info("New page found: " + possible_pg.url)
 
@@ -135,10 +137,10 @@ def input_discovery(url, session):
 	"""
 	
 	logger.info("Discovering inputs for %s" % (url))
-	forms = form_discovery(url, session)
-	cookies = cookie_discovery(url, session)
+	forms, session = form_discovery(url, session)
+	cookies, session = cookie_discovery(url, session)
 	
-	return { 'cookies': cookies, 'forms': forms }
+	return { 'cookies': cookies, 'forms': forms }, session
 	
 def form_discovery(url, session):
 
@@ -171,7 +173,7 @@ def form_discovery(url, session):
 					form['inputs'].append(input_field['name'])
 					logger.info("--input field '%s' found" % (input_field['name']))
 
-	return forms
+	return forms, session
 
 def cookie_discovery(url, session):
 	page = session.get(url);
@@ -190,7 +192,6 @@ def cookie_discovery(url, session):
 		cookies.append(cookie)
 		logger.info("--cookie found: %(name)s=%(value)s" % cookie)
 
-	return cookies
+	return cookies, session
 
 
-	
