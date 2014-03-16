@@ -121,7 +121,7 @@ def page_guessing(page, session, discovered_urls, common_words_file):
 			possible_pg = session.get(page.url + pg + "." + ext)
 
 			# check if we are dvwa, if we have been redirected to login page
-			if "http://127.0.0.1/dvwa/login.php" in page.url:
+			if "http://127.0.0.1/dvwa/login.php" in page.url and "logout.php" not in url:
 				possible_pg, session = dvwa_relogin(session, url)
 
 			if possible_pg.status_code < 300 and possible_pg.url not in discovered_urls:
@@ -145,7 +145,7 @@ def form_discovery(url, session):
 	page = session.get(url)
 
 	# check if we are dvwa, if we have been redirected to login page
-	if "http://127.0.0.1/dvwa/login.php" in page.url:
+	if "http://127.0.0.1/dvwa/login.php" in page.url and "logout.php" not in url:
 		page, session = dvwa_relogin(session, url)
 
 	soup = BeautifulSoup(page.content)
@@ -177,7 +177,7 @@ def cookie_discovery(url, session):
 	page = session.get(url);
 
 	# check if we are dvwa, if we have been redirected to login page
-	if "http://127.0.0.1/dvwa/login.php" in page.url:
+	if "http://127.0.0.1/dvwa/login.php" in page.url and "logout.php" not in url:
 		page, session = dvwa_relogin(session, url)
 
 	page_cookies = session.cookies;
