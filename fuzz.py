@@ -62,6 +62,14 @@ else:
 					session.post(custom_auth[options.app_to_auth.lower()]["login_url"], data=payload)
 					page = session.get(url + "/" + options.app_to_auth)
 
+					# set the security cookie to low!
+					cookies = session.cookies
+					session_id = cookies["PHPSESSID"]
+					session.cookies.clear() # clear the cookies in the cookie jar
+
+					session.cookies["PHPSESSID"] = session_id
+					session.cookies["security"] = "low"
+
 				elif options.app_to_auth.lower() == "bodgeit":
 
 					# Just get the bodgeit page b/c there u don't need to authentication to use site.
@@ -78,6 +86,10 @@ else:
 				parser.error("Cannot reach the URL specified")
 			else:
 				logger.info("Successfully reached page!")
+
+
+			test = session.get("http://127.0.0.1/dvwa/vulnerabilities/sqli/")
+			cookies = session.cookies
 
 			# time to discover
 			discovered_urls = page_discovery(page, session, options.common_words)

@@ -98,6 +98,7 @@ def input_discovery(url, session):
 	return { 'cookies': cookies, 'forms': forms }
 	
 def form_discovery(url, session):
+
 	page = session.get(url)
 	soup = BeautifulSoup(page.content)
 
