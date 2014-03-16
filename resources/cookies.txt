@@ -1,0 +1,6 @@
+PHPSESSID
+user
+userId
+session
+sid
+SESS

@@ -15,8 +15,8 @@ import pprint
 from logger import *
 from custom_auth import *							# Read in all hardcoded authentication
 from options import *								# Options parser
-from discover import * 								# Module containing page discovery functions
-from test import *							 		# Module containing page test functions
+from discovery.discover import * 					# Module containing page discovery functions
+from fuzzing.test import *							# Module containing page test functions
 
 pr = pprint.PrettyPrinter(indent=4)
 
@@ -92,5 +92,4 @@ else:
 			if action == "test":
 				test_pages(discovered_pages, session, options)
 	else:
-		#test_pages([], session)
 		parser.error("invalid action")
