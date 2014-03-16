@@ -93,7 +93,6 @@ else:
 
 			# time to discover
 			discovered_urls, session = page_discovery(page, session, options.common_words)
-			print(discovered_urls)
 			discovered_pages = list()
 			
 			for url in discovered_urls:
