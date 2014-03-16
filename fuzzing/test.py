@@ -2,12 +2,13 @@
 file: test.py
 description: Contains functions for performing testing/fuzzing of a web page
 """
-from logger import *     		 			 # logging output
-from exploit_strategy import *   			 # the exploit strategy
-from sanitization_exploit import * 	 		 # the concrete sanitization exploit
-from delayed_response_exploit import *		 # the concrete delayed response exploit
-from http_response_exploit import *			 # the concrete http response code exploit
-from sensitive_data_exploit import *		 # the concrete sensitive data exploit
+
+from logger import *                            # logging output
+from fuzzing.exploit_strategy import *          # the exploit strategy
+from fuzzing.sanitization_exploit import *      # the concrete sanitization exploit
+from fuzzing.delayed_response_exploit import *  # the concrete delayed response exploit
+from fuzzing.http_response_exploit import *     # the concrete http response code exploit
+from fuzzing.sensitive_data_exploit import *    # the concrete sensitive data exploit
 
 def test_pages(pages, session, options):
   """
@@ -26,7 +27,7 @@ def test_pages(pages, session, options):
  # sensitive_data = ExploitStrategy(pages, session, SensitiveDataExploit(), options)
 
   # excute all exploit strategies
-  #sanitization.execute()
-  #delayed_response.execute()
+  sanitization.execute()
+  # delayed_response.execute()
  # http_response.execute()
  # sensitive_data.execute()

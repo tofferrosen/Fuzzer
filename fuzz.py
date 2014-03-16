@@ -15,8 +15,8 @@ import pprint
 from logger import *
 from custom_auth import *							# Read in all hardcoded authentication
 from options import *								# Options parser
-from discover import * 								# Module containing page discovery functions
-from test import *							 		# Module containing page test functions
+from discovery.discover import * 					# Module containing page discovery functions
+from fuzzing.test import *							# Module containing page test functions
 
 pr = pprint.PrettyPrinter(indent=4)
 
@@ -62,6 +62,14 @@ else:
 					session.post(custom_auth[options.app_to_auth.lower()]["login_url"], data=payload)
 					page = session.get(url + "/" + options.app_to_auth)
 
+					# set the security cookie to low!
+					cookies = session.cookies
+					session_id = cookies["PHPSESSID"]
+					session.cookies.clear() # clear the cookies in the cookie
+
+					session.cookies["PHPSESSID"] = session_id
+					session.cookies["security"] = "low"
+					
 				elif options.app_to_auth.lower() == "bodgeit":
 
 					# Just get the bodgeit page b/c there u don't need to authentication to use site.
@@ -79,11 +87,16 @@ else:
 			else:
 				logger.info("Successfully reached page!")
 
+
+			test = session.get("http://127.0.0.1/dvwa/vulnerabilities/sqli/")
+			cookies = session.cookies
+
 			# time to discover
-			discovered_urls = page_discovery(page, session, options.common_words)
+			discovered_urls, session = page_discovery(page, session, options.common_words)
 			discovered_pages = list()
+			
 			for url in discovered_urls:
-				inputs = input_discovery(url,session)
+				inputs, session = input_discovery(url,session)
 				discovered_page = { 'url': url, 'inputs': inputs }
 				discovered_pages.append(discovered_page)
 
@@ -92,5 +105,4 @@ else:
 			if action == "test":
 				test_pages(discovered_pages, session, options)
 	else:
-		#test_pages([], session)
 		parser.error("invalid action")
