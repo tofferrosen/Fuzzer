@@ -1,4 +1,0 @@
-php
-html
-htm
-jsp
