@@ -37,7 +37,10 @@ else:
 
 		# Ensure that required common-file option is set
 		if options.common_words is None:
-			parser.error("newline-delimited file of common words is required for discovery")
+			parser.error("newline-delimited file of common words is required for discovery. Please run python fuzz.py --help for usage.")
+
+		elif options.vectors is None and action == "test":
+			parser.error("newline-delimited file of vectors is required for fuzzing/testing. Please run python fuzz.py --help for usage.")
 		else:
 
 			# authentic if applicable to site
@@ -103,6 +106,8 @@ else:
 			#pr.pprint(discovered_pages)
 
 			if action == "test":
+
 				test_pages(discovered_pages, session, options)
 	else:
+
 		parser.error("invalid action")
