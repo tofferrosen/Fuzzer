@@ -65,11 +65,11 @@ else:
 					# set the security cookie to low!
 					cookies = session.cookies
 					session_id = cookies["PHPSESSID"]
-					session.cookies.clear() # clear the cookies in the cookie jar
+					session.cookies.clear() # clear the cookies in the cookie
 
 					session.cookies["PHPSESSID"] = session_id
 					session.cookies["security"] = "low"
-
+					
 				elif options.app_to_auth.lower() == "bodgeit":
 
 					# Just get the bodgeit page b/c there u don't need to authentication to use site.
@@ -94,6 +94,7 @@ else:
 			# time to discover
 			discovered_urls = page_discovery(page, session, options.common_words)
 			discovered_pages = list()
+			
 			for url in discovered_urls:
 				inputs = input_discovery(url,session)
 				discovered_page = { 'url': url, 'inputs': inputs }

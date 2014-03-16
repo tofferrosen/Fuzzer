@@ -8,6 +8,7 @@ import sys
 from BeautifulSoup import BeautifulSoup, SoupStrainer	# for parsing web pages
 from urlparse import urljoin # for resolving a relative url path to absolute path
 from urlparse import urlparse # for parsing the domain of a url
+from custom_auth import * # Read in all hardcoded authentication
 
 
 def page_discovery(page, session, common_words_file):
@@ -20,6 +21,37 @@ def page_discovery(page, session, common_words_file):
 	page_guessing(page, session, discovered_urls, common_words_file)
 
 	return discovered_urls
+
+def dvwa_relogin(session, url):
+	"""
+	Login back to the dvwa application, and return the
+	page attempted (passed in) whose url was redirected to
+	the login screen and the new session
+	"""
+
+	username = custom_auth["dvwa"]["username"]
+	password = custom_auth["dvwa"]["password"]
+
+	# Details to be posted to the login form
+	payload = {
+		"username": username,
+		"password": password,
+		"Login": "Login"
+	}
+
+	session = requests.Session()
+	session.post(custom_auth["dvwa"]["login_url"], data=payload)
+	page = session.get(url + "/" + "dvwa")
+
+	# set the security cookie to low!
+	cookies = session.cookies
+	session_id = cookies["PHPSESSID"]
+	session.cookies.clear() # clear the cookies in the cookie
+
+	session.cookies["PHPSESSID"] = session_id
+	session.cookies["security"] = "low"
+
+	return session.get(url), session
 	
 def recursive_link_search(url, domain, urls, session, max_depth, depth):
 	"""
@@ -37,6 +69,12 @@ def recursive_link_search(url, domain, urls, session, max_depth, depth):
 		urls.append(url)
 
 	page = session.get(url)
+
+	# check if we are dvwa, if we have been redirected to login page
+	if "http://127.0.0.1/dvwa/login.php" in page.url and "logout.php" not in url:
+		print("redirecting")
+		page, session = dvwa_relogin(session, url)
+
 	soup = BeautifulSoup(page.content)
 	links = soup.findAll('a', href=True)
 
@@ -81,6 +119,11 @@ def page_guessing(page, session, discovered_urls, common_words_file):
 	for pg in common_pgs:
 		for ext in common_ext:
 			possible_pg = session.get(page.url + pg + "." + ext)
+
+			# check if we are dvwa, if we have been redirected to login page
+			if "http://127.0.0.1/dvwa/login.php" in page.url:
+				possible_pg, session = dvwa_relogin(session, url)
+
 			if possible_pg.status_code < 300 and possible_pg.url not in discovered_urls:
 				logger.info("New page found: " + possible_pg.url)
 
@@ -100,9 +143,12 @@ def input_discovery(url, session):
 def form_discovery(url, session):
 
 	page = session.get(url)
-	soup = BeautifulSoup(page.content)
 
-	
+	# check if we are dvwa, if we have been redirected to login page
+	if "http://127.0.0.1/dvwa/login.php" in page.url:
+		page, session = dvwa_relogin(session, url)
+
+	soup = BeautifulSoup(page.content)
 	forms = list()
 	
 	for form_element in soup.findAll('form'):
@@ -129,6 +175,11 @@ def form_discovery(url, session):
 
 def cookie_discovery(url, session):
 	page = session.get(url);
+
+	# check if we are dvwa, if we have been redirected to login page
+	if "http://127.0.0.1/dvwa/login.php" in page.url:
+		page, session = dvwa_relogin(session, url)
+
 	page_cookies = session.cookies;
 
 	logger.info("Discovering cookies")
