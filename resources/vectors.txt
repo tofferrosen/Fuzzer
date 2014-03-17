@@ -1,3 +1,8 @@
 bobby' OR user_id LIKE '%
 'OR 1=1
+MySQL
+MYSQL
+mysql
+<
+>
 password
