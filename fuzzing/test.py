@@ -3,12 +3,12 @@ file: test.py
 description: Contains functions for performing testing/fuzzing of a web page
 """
 
-from logger import *     		 			              # logging output
-from fuzzing.exploit_strategy import *   			  # the exploit strategy
-from fuzzing.sanitization_exploit import * 	 		# the concrete sanitization exploit
-from fuzzing.delayed_response_exploit import *	# the concrete delayed response exploit
-from fuzzing.http_response_exploit import *			# the concrete http response code exploit
-from fuzzing.sensitive_data_exploit import *		# the concrete sensitive data exploit
+from logger import *                            # logging output
+from fuzzing.exploit_strategy import *          # the exploit strategy
+from fuzzing.sanitization_exploit import *      # the concrete sanitization exploit
+from fuzzing.delayed_response_exploit import *  # the concrete delayed response exploit
+from fuzzing.http_response_exploit import *     # the concrete http response code exploit
+from fuzzing.sensitive_data_exploit import *    # the concrete sensitive data exploit
 
 def test_pages(pages, session, options):
   """
@@ -23,12 +23,11 @@ def test_pages(pages, session, options):
   # set up all exploit strategies 
   sanitization = ExploitStrategy(pages, session, SanitizationExploit(), options)
   delayed_response = ExploitStrategy(pages, session, DelayedResponseExploit(), options)
-  sanitization.execute()
- # http_reponse = ExploitStrategy(pages, session, HttpResponseExploit(), options)
+  http_response = ExploitStrategy(pages, session, HttpResponseExploit(), options)
  # sensitive_data = ExploitStrategy(pages, session, SensitiveDataExploit(), options)
 
   # excute all exploit strategies
-  #sanitization.execute()
-  #delayed_response.execute()
- # http_response.execute()
+  sanitization.execute()
+  delayed_response.execute()
+  http_response.execute()
  # sensitive_data.execute()
