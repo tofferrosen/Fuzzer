@@ -41,6 +41,10 @@ else:
 
 		elif options.vectors is None and action == "test":
 			parser.error("newline-delimited file of vectors is required for fuzzing/testing. Please run python fuzz.py --help for usage.")
+
+		elif options.sensitive is None and action == "test":
+			parser.error("newline-delimited file of sensitive data is required for fuzzing/testing. Please run python fuzz.py --help for usage.")
+			
 		else:
 
 			# authentic if applicable to site

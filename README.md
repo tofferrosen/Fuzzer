@@ -35,4 +35,4 @@ http://yogi.se.rit.edu/~swen-331/projects/fuzzer/
 `python fuzz.py discover http://127.0.0.1 --common-words="Resources/pageNames.txt"`
 
 ## Example Usage for Test
-`python fuzz.py test http://127.0.0.1 --common-words="Resources/pageNames.txt" --vectors="Resources/vectors.txt`
+`python fuzz.py test http://127.0.0.1 --common-words="resources/pageNames.txt" --vectors="resources/vectors.txt" --custom-auth=dvwa --sensitive="resources/sensitive.txt"`

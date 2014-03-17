@@ -32,3 +32,8 @@ parser.add_option("--random", dest="random", default= False,
 parser.add_option("--slow", dest="slow_ms", default=500,
 	help="Number of milliseconds considered when a response is considered 'slow' \
 	Default is 500 milliseconds", metavar = "NUMBER")
+
+# sensitive data option
+parser.add_option("--sensitive", dest="sensitive",
+	help=" Newline-delimited file data that should never be leaked. It's assumed that this data is in the application's database (e.g. test data), but is not reported in any response. Required.",
+	metavar = "FILE")
