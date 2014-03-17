@@ -182,7 +182,7 @@ def cookie_discovery(url, session):
 	if "http://127.0.0.1/dvwa/login.php" in page.url and "logout.php" not in url:
 		page, session = dvwa_relogin(session, url)
 
-	page_cookies = session.cookies;
+	page_cookies = session.cookies
 
 	logger.info("Discovering cookies")
 	cookies = list()

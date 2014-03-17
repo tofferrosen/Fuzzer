@@ -106,7 +106,6 @@ else:
 			#pr.pprint(discovered_pages)
 
 			if action == "test":
-
 				test_pages(discovered_pages, session, options)
 	else:
 
