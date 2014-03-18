@@ -29,5 +29,5 @@ def test_pages(pages, session, options):
   # excute all exploit strategies
   sanitization.execute()
   delayed_response.execute()
- # http_response.execute()
+  http_response.execute()
   sensitive_data.execute()
