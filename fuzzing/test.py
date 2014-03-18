@@ -3,6 +3,7 @@ file: test.py
 description: Contains functions for performing testing/fuzzing of a web page
 """
 
+import random
 from logger import *                            # logging output
 from fuzzing.exploit_strategy import *          # the exploit strategy
 from fuzzing.sanitization_exploit import *      # the concrete sanitization exploit
@@ -19,6 +20,11 @@ def test_pages(pages, session, options):
   @session    the requests session objects
   @options    all options given. includes random, location of vectors, and delay time in ms
   """
+
+  # if random is turned on, shuffle pages
+  if options.random == "true" or options.random == "True":
+    logger.info("shuffling pages as random is turned on")
+    random.shuffle(pages) # in place shuffling
 
   # set up all exploit strategies 
   sanitization = ExploitStrategy(pages, session, SanitizationExploit(), options)
