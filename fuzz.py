@@ -95,9 +95,6 @@ else:
 				logger.info("Successfully reached page!")
 
 
-			test = session.get("http://127.0.0.1/dvwa/vulnerabilities/sqli/")
-			cookies = session.cookies
-
 			# time to discover
 			discovered_urls, session = page_discovery(page, session, options.common_words, options.app_to_auth)
 			discovered_pages = list()
