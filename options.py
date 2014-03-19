@@ -23,7 +23,7 @@ parser.add_option("--vectors", dest="vectors",
 	metavar = "FILE")
 
 # random option
-parser.add_option("--random", dest="random", default= False,
+parser.add_option("--random", dest="random", default= "False",
 	help="[true|false]  When off, try each input to each page systematically.  \
 	When on, choose a random page, then a random input field and test all vectors. Default: false.",
 	metavar = "BOOLEAN")
